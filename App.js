@@ -89,7 +89,7 @@ Ext.define('CustomApp', {
                 {
                     text: "Score",
                     dataIndex: "ValueScore",
-                    enableEditing: false,
+                    editor: null,
                 }
             ]
         }), this.add(this._myGrid);
