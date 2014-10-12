@@ -6,8 +6,8 @@ Ext.define('CustomApp', {
     componentCls: 'app',
     scopeType: 'release',
     comboboxConfig: {
-        fieldLabel: '<div align="right"><input type="button" value="Refresh" onClick="javascript: this._loadFeatures();"/> &nbsp;&nbsp;&nbsp;&nbsp;Select a PSI:</div>',
-        labelWidth: 200,
+        fieldLabel: 'Select a PSI:',
+//        labelWidth: 100,
         width: 500
     },
 	addContent: function() {
@@ -72,7 +72,7 @@ html: '<div align="right"><input type="button" value="Refresh" onClick="javascri
                 console.log("newscore: ", score);
                 if (oldScore !== score) { // only update if score changed
                     feature.set('ValueScore', score); // set score value in db
-                    feature.save();
+//                    feature.save();
                     console.log("Setting a new score", score);
                 }
             }
@@ -95,33 +95,59 @@ html: '<div align="right"><input type="button" value="Refresh" onClick="javascri
             model: 'PortfolioItem/Feature',
             title: "Feature Scoring Grid",
             height: "98%",
+            width: "98%",
             enableRanking: true,
-//            draggable: true,
+            draggable: true,
 //			showRowActionsColumn: true,
-// PRIVATE NOW			showRankColumn: true,
+//			showRankColumn: true,
             store: myStore,
-            selType: "cellmodel",
+//            selType: "cellmodel",
             columnCfgs: [
 				{
 					dataIndex: "DragAndDropRank",
 					maxWidth: 50
 				},
                 {
-                    text: "Portfolio ID",
+                    text: "Feature ID",
                     dataIndex: "FormattedID",
                     flex: 1,
+                    maxWidth: 100,
                     xtype: "templatecolumn",
                     tpl: Ext.create("Rally.ui.renderer.template.FormattedIDTemplate")
                 }, 
                 {
                     text: "Name",
                     dataIndex: "Name",
+                    editor: null
+                }, 
+                {
+                    text: "Time Value",
+                    dataIndex: "TimeCriticality",
+                    maxWidth: 100,
                     flex: 2
                 }, 
-                "TimeCriticality", "RROEValue", "UserBusinessValue", "JobSize", 
+                {
+                    text: "RR|OE Value",
+                    dataIndex: "RROEValue",
+                    maxWidth: 100,
+                    flex: 2
+                }, 
+                {
+                    text: "User Value",
+                    dataIndex: "UserBusinessValue",
+                    maxWidth: 100,
+                    flex: 2
+                }, 
+                {
+                    text: "Job Size",
+                    dataIndex: "JobSize",
+                    maxWidth: 100,
+                    flex: 2
+                }, 
                 {
                     text: "Score",
                     dataIndex: "ValueScore",
+                    maxWidth: 100,
                     editor: null
                 }
             ]
@@ -129,19 +155,6 @@ html: '<div align="right"><input type="button" value="Refresh" onClick="javascri
         this._hideMask();
         this.add(this._myGrid);
         app = this;
-        // override the event publish to prevent random refreshes of the whole app when the cell changes
-        var celledit = this._myGrid.plugins[0];
-        var oldPub = celledit.publish;
-        var newPub = function(event, varargs) {
-            if (event !== "objectupdate") {
-                oldPub.apply(this, arguments);
-            }
-            else {
-                // no-op
-            }
-        };
-
-        celledit.publish = Ext.bind(newPub, celledit);
     },
     _updateGrid: function(myStore) {
         if (this._myGrid === undefined) {
@@ -152,9 +165,5 @@ html: '<div align="right"><input type="button" value="Refresh" onClick="javascri
             this._myGrid.reconfigure(myStore);
             this._hideMask();
         }
-    },
-	_displayDetails: function() {
-		
-	}
-
+    }
 });
