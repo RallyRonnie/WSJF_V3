@@ -13,6 +13,8 @@ and there is a release timebox. No other filtering is handled, but could be
 added. The WSJF score calculation is 
 ( Time Criticality + RR/OE Value + User/Business Value)/ Job Size 
 
+## Screen Shot
+![WSJF Grid](https://raw.githubusercontent.com/RallyRonnie/WSJF_V3/master/deploy/WSJF_V3_Screenshot.png)
 
 ## License
 
