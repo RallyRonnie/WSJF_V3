@@ -7,17 +7,9 @@ Ext.define('CustomApp', {
     scopeType: 'release',
     comboboxConfig: {
         fieldLabel: 'Select a PSI:',
-//        labelWidth: 100,
         width: 500
     },
-	addContent: function() {
-	console.log("in content");
-		this._showMask("Loading Data");
-		this._createEquationPanel();
-		this._loadFeatures();
-	},
 	onScopeChange: function() {
-		console.log("in change");
 		this._showMask("Refreshing Data");
 		this._createEquationPanel();
 		this._loadFeatures();
@@ -47,7 +39,6 @@ Ext.define('CustomApp', {
 		}
 	},
     _loadFeatures: function() {
-     console.log("loading store");
         Ext.create("Rally.data.WsapiDataStore", {
             model: "PortfolioItem/Feature",
             autoLoad: true,
@@ -68,20 +59,19 @@ Ext.define('CustomApp', {
     },
     _calculateScore: function(records) {
         Ext.Array.each(records, function(feature) {
-            console.log("feature", feature.data);
             var jobSize = feature.data.JobSize;
             var timeValue = feature.data.TimeCriticality;
             var OERR = feature.data.RROEValue;
             var userValue = feature.data.UserBusinessValue;
             var oldScore = feature.data.ValueScore;
-            console.log( "Old Score ", oldScore);
+//            console.log( "Old Score ", oldScore);
             if (jobSize > 0) { // jobSize is the denominator so make sure it's not 0
                 var score = Math.floor(((userValue + timeValue + OERR ) / jobSize) + 0.5);
-                console.log("newscore: ", score);
+//                console.log("newscore: ", score);
                 if (oldScore !== score) { // only update if score changed
                     feature.set('ValueScore', score); // set score value in db
 //                    feature.save();
-                    console.log("Setting a new score", score);
+//                    console.log("Setting a new score", score);
                 }
             }
         });
@@ -170,7 +160,6 @@ Ext.define('CustomApp', {
             this._createGrid(myStore);
         }
         else {
-            console.log("Refreshing Grid");
             this._myGrid.reconfigure(myStore);
             this._hideMask();
         }
