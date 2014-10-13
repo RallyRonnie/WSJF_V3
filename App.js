@@ -13,33 +13,41 @@ Ext.define('CustomApp', {
 	addContent: function() {
 	console.log("in content");
 		this._showMask("Loading Data");
+		this._createEquationPanel();
 		this._loadFeatures();
 	},
 	onScopeChange: function() {
 		console.log("in change");
 		this._showMask("Refreshing Data");
+		this._createEquationPanel();
 		this._loadFeatures();
 	},
-html: '<div align="right"><input type="button" value="Refresh" onClick="javascript: app._loadFeatures();"/> &nbsp;' +
-		'<div "font-family:arial,helvetica,sans-serif;font-size:12px;font-color:black" align="center">' +
-		'<table bgcolor="lightgray" border="2" style="font-color:black;">' +
-		'<tr><td><table border="0">' +
-		'<tr><td title="Weighted Shortest Job First" rowspan="3" style="padding: 10px">WSJF =</td>' +
-		'<td title="User Value - Relative business value of the Feature" style="vertical-align: bottom;padding: 0 3px 0 10px;">User Value + </td>' +
-		'<td title="Time Value - This measure deals with the NEED of delivering something in a timescale." style="vertical-align: bottom;padding: 0 3px 0 0;">Time Value + </td>' +
-		'<td title="RR|OE Value - Relative value for the need of a business to eliminate risks earlier or the potential for new business opportunity to be derived from the Feature" style="vertical-align: bottom;padding: 0 10px 0 0;">RR|OE Value</td>' +
-		'</tr><tr>' +
-		'<td colspan="3" style="height: 2px; vertical-align: middle; padding: 0 10px 0 10px;"><hr noshade></td>' +
-		'</tr><tr>' +
-		'<td colspan="3" title="Job Size - Time needed to implement the Feature" style="text-align: center;vertical-align: top;">Job Size</td>' +
-		'</tr></table></td>' +
-		'<td style="text-align: center;padding:0 10px 0 10px;">' +
-		'<p>Scale for each Value should follow: 1, 2, 3, 5, 8, 13, 21</p>' +
-		'<p>Highest WSJF Score = Highest Priority</p></td></tr></table></div>',
-
+	html: '<div align="right"><input type="button" value="Refresh" onClick="javascript: app._loadFeatures();"/> &nbsp;',
+	_createEquationPanel: function () {
+		if (!this._equationPanel) {
+			this._equationPanel = Ext.create('Ext.Panel', {
+				bodyPadding  : 5,
+				border: 0,
+				html: '<div "font-family:arial,helvetica,sans-serif;font-size:12px;font-color:black" align="center">' + '<br>' +
+				'<table bgcolor="#F6F6F6" border="2" style="font-color:black;">' +
+				'<tr><td><table border="0">' +
+				'<tr><td title="Weighted Shortest Job First" rowspan="3" style="padding: 10px">WSJF =</td>' +
+				'<td title="Time Value - Relative value of delivering the Feature sooner on the timeline" style="vertical-align: bottom;padding: 0 3px 0 10px;">Time Value + </td>' +
+				'<td title="RR|OE Value - Relative value of risk reduction or potential business opportunity enablement" style="vertical-align: bottom;padding: 0 3px 0 0;">RR|OE Value + </td>' +
+				'<td title="User/Business Value - Relative value to the end users or business" style="vertical-align: bottom;padding: 0 10px 0 0;">User/Business Value </td>' +
+				'</tr><tr>' +
+				'<td colspan="3" style="height: 2px; vertical-align: middle; padding: 0 10px 0 10px;"><hr noshade></td>' +
+				'</tr><tr>' +
+				'<td colspan="3" title="Job Size - Time needed to implement the Feature" style="text-align: center;vertical-align: top;">Job Size</td>' +
+				'</tr></table></td>' +
+				'<td style="text-align: center;padding:0 10px 0 10px;">' +
+				'<p>Scale for each Value should follow: 1, 2, 3, 5, 8, 13, 21</p>' +
+				'<p>Highest WSJF Score = Highest Priority</p></td></tr></table></div>'
+			});
+		}
+	},
     _loadFeatures: function() {
-//		this.down('#header').add({'<h1>test from add</h1>'});
-    console.log("loading store");
+     console.log("loading store");
         Ext.create("Rally.data.WsapiDataStore", {
             model: "PortfolioItem/Feature",
             autoLoad: true,
@@ -153,6 +161,7 @@ html: '<div align="right"><input type="button" value="Refresh" onClick="javascri
             ]
         }), 
         this._hideMask();
+        this.add(this._equationPanel);
         this.add(this._myGrid);
         app = this;
     },
