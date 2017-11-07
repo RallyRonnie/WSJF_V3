@@ -17,9 +17,7 @@ added. The WSJF score calculation is
 ![WSJF Grid](https://raw.githubusercontent.com/RallyRonnie/WSJF_V3/master/deploy/WSJF_V3_Screenshot.png)
 
 ## License
-
 AppTemplate is released under the MIT license.  See the file [LICENSE](./LICENSE) for the full text.
 
 ##Documentation for SDK
-
 You can find the documentation on our help [site.](https://help.rallydev.com/apps/2.0rc2/doc/)
